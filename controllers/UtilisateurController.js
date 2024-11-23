@@ -5,7 +5,7 @@
 import Utilisateur from '../models/UtilisateurModel.js'
 
 // Obetnenir un utilisateur par son ID
-export const getUser = async (req, res) => {
+export const getUtilisateur = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await Utilisateur.findByPk(id);
@@ -17,7 +17,7 @@ export const getUser = async (req, res) => {
 };
 
 //1- La liste de utilisateurs (Lecture=R)
-export const getUsers = async (req,res) => {
+export const getUtilisateurs = async (req,res) => {
   const { page = 1, limit = 10 } = req.query;
   const offset = (page-1) * limit;
   try{
