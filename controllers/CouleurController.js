@@ -1,5 +1,19 @@
-import { Couleur } from "../models/couleur.js";
-import { validationResult } from "express-validator";
+import { Couleur } from "../models/Relations.js";
+// import { validationResult } from "express-validator";
+
+// Obtenir une couleur
+export const getCouleur = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const couleur = await Couleur.findByPk(id);
+    if (!couleur) return res.status(404).json({ message: "Couleur non trouvée" });
+
+    res.status(200).json(couleur);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 // Obtenir toutes les couleurs
 export const getCouleurs = async (req, res) => {
@@ -12,12 +26,24 @@ export const getCouleurs = async (req, res) => {
 };
 
 // Ajouter une couleur
-export const addCouleur = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+// export const addCouleur = async (req, res) => {
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({ errors: errors.array() });
+//   }
 
+//   const { nom, code } = req.body;
+
+//   try {
+//     const nouvelleCouleur = await Couleur.create({ nom, code });
+//     res.status(201).json(nouvelleCouleur);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+// Ajouter une couleur
+export const addCouleur = async (req, res) => {
   const { nom, code } = req.body;
 
   try {
