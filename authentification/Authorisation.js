@@ -1,10 +1,13 @@
-import { Utilisateur } from '../models/Relations.js';
+import { Role, Utilisateur } from '../models/Relations.js';
 
 const authorisation = roles => async (req, res, next) => {
     try {
-        const user = await Utilisateur.findByPk(req.user.id);
-        if (!roles.includes(user.role)) {
-            return res.status(403).json({ message: "Non autorisé" });
+        const user = await Utilisateur.findByPk(req.user.id, {
+            include: Role
+        });
+
+        if (!roles.includes(user.Role.titre)) {
+            return res.status(403).json({ message: "Non autorisé"});
         }
         next();
     } catch (error) {

@@ -32,7 +32,7 @@ Option.belongsToMany(Voiture, { through: 'voiture_option' });
 
 // 1 - 1 utilisateur et role
 Utilisateur.belongsTo(Role);
-Role.hasOne(Utilisateur);
+Role.hasMany(Utilisateur);
 
 export { Voiture, Image, Couleur, Option, Role, Utilisateur };
 // export default { Marque, Modele, Voiture, Image, Couleur, Option, Role, Utilisateur };
