@@ -5,6 +5,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import compression from 'compression';
 import database from './config/Connections.js';
+import verifierToken from './authentification/VerifierToken.js';
+import authorisation from './authentification/Authorisation.js';
 
 import couleurRoute from './routes/CouleurRoute.js';
 import optionRoute from './routes/OptionRoute.js';
@@ -23,15 +25,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //Generation des tables
-database.sync({alter:true});
+//database.sync({alter:true});
 
-app.use("/api/couleur", couleurRoute);
-app.use("/api/option", optionRoute);
-app.use("/api/voiture", voitureRoute);
-app.use("/api/image", imageRoute);
 app.use("/api/login", login);
-app.use("/api/role", RoleRoute);
-app.use("/api/utilisateur", UtilisateurRoute);
+app.use("/api/couleur",verifierToken, couleurRoute);
+app.use("/api/option",verifierToken, optionRoute);
+app.use("/api/voiture",verifierToken, voitureRoute);
+app.use("/api/image",verifierToken, imageRoute);
+app.use("/api/role", verifierToken, authorisation(["Admin"]), RoleRoute);
+app.use("/api/utilisateur", verifierToken, authorisation(["Admin"]), UtilisateurRoute);
 
 
 const port = ENV.PORT || 3000;

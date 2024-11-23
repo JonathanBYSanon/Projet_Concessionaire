@@ -2,7 +2,8 @@
 
 /* Importer l'accès à la table des utilisateurs (Importation du modèle Utilisateur)*/
 
-import Utilisateur from '../models/UtilisateurModel.js'
+import Utilisateur from '../models/UtilisateurModel.js';
+import bcrypt from 'bcryptjs';
 
 // Obetnenir un utilisateur par son ID
 export const getUtilisateur = async (req, res) => {
@@ -35,10 +36,13 @@ export const getUtilisateurs = async (req,res) => {
 // 2- Création d'un utilisateur (Création=C)
 export const addUtilisateur = async (req, res) => {
   // Les informations de l'utilisateur (formulaire ou postman)
-  const infoUtilisateur = req.body;
+  const {password, ...infoUtilisateur} = req.body;
+  // Crypter le mot de passe
+  const hash = bcrypt.hashSync(password);
+  infoUtilisateur.password = hash;
 
   try {
-      const result = await Utilisateur.create(infoUser)
+      const result = await Utilisateur.create(infoUtilisateur)
       res.status(201).json({ message: 'Utilisateur cree avec succes', data: result })
     
   } catch (error) {

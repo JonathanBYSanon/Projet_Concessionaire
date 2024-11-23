@@ -1,6 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Utilisateur} from '../models/Relations.js';
+import dotenv from 'dotenv';
+
+const ENV = dotenv.config().parsed;
 
 const login = async (req, res) => {
     try {
@@ -13,7 +16,7 @@ const login = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
         }
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: user.id }, ENV.JWT_SECRET, { expiresIn: '24h' });
         res.status(200).json({ token });
     } catch (error) {
         res.status(500).json({ message: error.message });

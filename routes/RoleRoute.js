@@ -9,19 +9,22 @@ const router = express.Router();
 
 // Route pour créer un nouveau rôle
 // Méthode : POST | URL : /role
-router.post('/role', addRole);
+router.post('/', addRole);
 
 // Route pour récupérer un rôle spécifique par son ID
 // Méthode : GET | URL : /role/:id
-router.get('/role/:id', getRoleById);
+router.get('/:id', getRoleById);
+
+// Route pour récupérer tous les rôles
+router.get('/', getRoles);
 
 // Route pour mettre à jour un rôle existant par son ID
 // Méthode : PUT | URL : /role/:id
-router.put('/role/:id', updateRole);
+router.put('/:id', updateRole);
 
 // Route pour supprimer un rôle par son ID
 // Méthode : DELETE | URL : /role/:id
-router.delete('/role/:id', deleteRole);
+router.delete('/:id', deleteRole);
 
 // Exportation du routeur pour utilisation dans l'application principale
 export default router;

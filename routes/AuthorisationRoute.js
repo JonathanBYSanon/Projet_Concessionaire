@@ -3,6 +3,6 @@ import Login from "../authentification/Login.js";
 
 const authorisationRoute = Router();
 
-authorisationRoute.post("/login", Login);
+authorisationRoute.post("/", Login);
 
 export default authorisationRoute;
