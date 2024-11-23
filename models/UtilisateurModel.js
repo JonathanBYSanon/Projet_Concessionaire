@@ -19,4 +19,4 @@ const Utilisateur = database.define('Utilisateur', {
   naissance: {type : DataTypes.DATEONLY }
 });
 
-  export default Utilisateur
+export default Utilisateur

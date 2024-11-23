@@ -1,6 +1,6 @@
-/* Controleur pour les opérations CRUD pour User */
+/* Contrôleur pour les opérations CRUD pour Utilisateur */
 
-/* Importer l'accès à la table des utilisateurs (Importation du modèle User)*/
+/* Importer l'accès à la table des utilisateurs (Importation du modèle Utilisateur)*/
 
 import Utilisateur from '../models/UtilisateurModel.js'
 
@@ -29,28 +29,25 @@ export const getUsers = async (req,res) => {
     
      //Message retourne en cas d'erreur
      res.status(400).json({message:error.message})
-
   }
+}
 
-};
-
-//2- Creation d'un utilisateur (Creation=C)
-export const addUser = async (req, res) => {
-  //Les informations de l'utilisateur (formulaire ou postman)
-  const infoUser = req.body
+// 2- Création d'un utilisateur (Création=C)
+export const addUtilisateur = async (req, res) => {
+  // Les informations de l'utilisateur (formulaire ou postman)
+  const infoUtilisateur = req.body;
 
   try {
       const result = await Utilisateur.create(infoUser)
       res.status(201).json({ message: 'Utilisateur cree avec succes', data: result })
-
+    
   } catch (error) {
-      res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
+};
 
-}
-
-//3- Mise a jour d'un utilisateur (U)
-export const updateUser = async (req, res) => {
+// 3- Mise à jour d'un utilisateur (U)
+export const updateUtilisateur = async (req, res) => {
   const { id } = req.params;
   const newInfo = req.body;
 
@@ -59,27 +56,25 @@ export const updateUser = async (req, res) => {
     if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
 
     // Mettre à jour les champs
-    Object.assign(user, newInfo);
-    await user.save();
+    Object.assign(utilisateur, newInfo);
+    await utilisateur.save();
 
-    res.status(200).json({ message: "Utilisateur mis à jour avec succès", data: user });
+    res.status(200).json({ message: "Utilisateur mis à jour avec succès", data: utilisateur });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//4- Suppression d'un utilisateur (D)
-export const deleteUser = async (req, res) => {
-  //Recuperer l'id de l'utilisateur a supprimer
-  const { id } = req.params
-  // const user=await User.findByPk(id)
-  // user.destroy()
+// 4- Suppression d'un utilisateur (D)
+export const deleteUtilisateur = async (req, res) => {
+  // Récupérer l'id de l'utilisateur à supprimer
+  const { id } = req.params;
 
   try {
       const result = await Utilisateur.destroy({ where: { id } })
       res.status(200).json({ message: "L'utilisateur supprime avec succes", data: result })
 
   } catch (error) {
-      res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
-}
+};
