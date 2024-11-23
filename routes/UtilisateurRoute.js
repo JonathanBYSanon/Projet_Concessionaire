@@ -7,8 +7,6 @@ import { updateRole } from '../controllers/RoleController.js';
 //Creer une variable utilisant la fonction Router
 const userRoute = Router()
 
-
-
 //Creation des routes
 userRoute.get('/', getUsers)
     .post('/', addUser)
@@ -16,3 +14,7 @@ userRoute.get('/', getUsers)
     .delete('/:id', deleteUser);
 
 export default userRoute
+
+
+
+
