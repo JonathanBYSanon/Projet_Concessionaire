@@ -10,6 +10,9 @@ import couleurRoute from './routes/CouleurRoute.js';
 import optionRoute from './routes/OptionRoute.js';
 import voitureRoute from './routes/VoitureRoute.js';
 import imageRoute from './routes/ImageRoute.js';
+import login from './routes/AuthorisationRoute.js';
+import RoleRoute from './routes/RoleRoute.js';
+import UtilisateurRoute from './routes/UtilisateurRoute.js';
 
 const ENV = dotenv.config().parsed;
 const app = express();
@@ -26,6 +29,9 @@ app.use("/api/couleur", couleurRoute);
 app.use("/api/option", optionRoute);
 app.use("/api/voiture", voitureRoute);
 app.use("/api/image", imageRoute);
+app.use("/api/login", login);
+app.use("/api/role", RoleRoute);
+app.use("/api/utilisateur", UtilisateurRoute);
 
 
 const port = ENV.PORT || 3000;

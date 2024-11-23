@@ -1,15 +1,15 @@
 // Importer la fonction qui permet de créer les routes
 import { Router } from 'express';   
-import { addUtilisateur, deleteUtilisateur, getUsers, profilUtilisateur } from '../controllers/UtilisateurController.js';
-import { updateRole } from '../controllers/RoleController.js';
+import { addUser, deleteUser, getUsers, getUser, updateUser} from '../controllers/UtilisateurController.js';
 
-// Créer une variable utilisant la fonction Router
+//Creer une variable utilisant la fonction Router
 const utilisateurRoute = Router();
 
-// Création des routes
-utilisateurRoute.get('/', getUsers) // Liste des utilisateurs
-    .post('/', addUtilisateur) // Ajout d'un utilisateur
-    .put('/', updateRole) // Mise à jour du rôle (vérifiez si c'est lié à Utilisateur)
-    .delete('/:id', deleteUtilisateur); // Suppression d'un utilisateur par ID
+//Creation des routes
+utilisateurRoute.get('/', getUsers)
+    .get('/:id', getUser)
+    .post('/', addUser)
+    .put('/:id', updateUser)
+    .delete('/:id', deleteUser);
 
 export default utilisateurRoute;
