@@ -10,6 +10,10 @@ const Couleur = sequelize.define('Couleur', {
     nom: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    code: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     tableName: 'couleurs',

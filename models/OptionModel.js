@@ -10,6 +10,10 @@ const Options = sequelize.define('Options', {
     nom: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true // Peut être null si aucune description n'est fournie
     }
 }, {
     tableName: 'options',
@@ -17,3 +21,4 @@ const Options = sequelize.define('Options', {
 });
 
 module.exports = Options;
+
