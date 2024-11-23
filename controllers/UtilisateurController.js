@@ -1,89 +1,78 @@
-/* Controleur pour les opérations CRUD pour User */
+/* Contrôleur pour les opérations CRUD pour Utilisateur */
 
-/* Importer l'accès à la table des utilisateurs (Importation du modèle User)*/
+/* Importer l'accès à la table des utilisateurs (Importation du modèle Utilisateur)*/
 
-import { User } from '../models/UtilisateurModel.js'
+import { Utilisateur } from '../models/UtilisateurModel.js';
 
-
-//1- La liste de utilisateurs (Lecture=R)
-export const getUsers = async (req,res) => {
+// 1- La liste des utilisateurs (Lecture=R)
+export const getUsers = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  const offset = (page-1) * limit;
-  try{
-     //Lecture de la liste quand tout se passe bien
-     const users = await User.findAndCountAll({ limit, offset});
-     res.status(200).json({ total : users.count, data: users.rows, currentPage: parseInt(page), totalPages: Math.ceil(users.count / limit)  });
-
-  } catch (error){
-    
-     //Message retourne en cas d'erreur
-     res.status(400).json({message:error.message})
-
+  const offset = (page - 1) * limit;
+  try {
+    // Lecture de la liste quand tout se passe bien
+    const utilisateurs = await Utilisateur.findAndCountAll({ limit, offset });
+    res.status(200).json({ 
+      total: utilisateurs.count, 
+      data: utilisateurs.rows, 
+      currentPage: parseInt(page), 
+      totalPages: Math.ceil(utilisateurs.count / limit) 
+    });
+  } catch (error) {
+    // Message retourné en cas d'erreur
+    res.status(400).json({ message: error.message });
   }
-
 };
 
-//2- Creation d'un utilisateur (Creation=C)
-export const addUser = async (req, res) => {
-  //Les informations de l'utilisateur (formulaire ou postman)
-  const infoUser = req.body
+// 2- Création d'un utilisateur (Création=C)
+export const addUtilisateur = async (req, res) => {
+  // Les informations de l'utilisateur (formulaire ou postman)
+  const infoUtilisateur = req.body;
 
   try {
-      const result = await User.create(infoUser)
-      res.status(201).json({ message: 'Utilisateur cree avec succes', data: result })
-
+    const result = await Utilisateur.create(infoUtilisateur);
+    res.status(201).json({ message: 'Utilisateur créé avec succès', data: result });
   } catch (error) {
-      res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
+};
 
-}
-
-//3- Mise a jour d'un utilisateur (U)
-export const updateUser = async (req, res) => {
+// 3- Mise à jour d'un utilisateur (U)
+export const updateUtilisateur = async (req, res) => {
   const { id } = req.params;
   const newInfo = req.body;
 
   try {
-    const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
+    const utilisateur = await Utilisateur.findByPk(id);
+    if (!utilisateur) return res.status(404).json({ message: "Utilisateur non trouvé" });
 
     // Mettre à jour les champs
-    Object.assign(user, newInfo);
-    await user.save();
+    Object.assign(utilisateur, newInfo);
+    await utilisateur.save();
 
-    res.status(200).json({ message: "Utilisateur mis à jour avec succès", data: user });
+    res.status(200).json({ message: "Utilisateur mis à jour avec succès", data: utilisateur });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//4- Suppression d'un utilisateur (D)
-export const deleteUser = async (req, res) => {
-  //Recuperer l'id de l'utilisateur a supprimer
-  const { id } = req.params
-  // const user=await User.findByPk(id)
-  // user.destroy()
+// 4- Suppression d'un utilisateur (D)
+export const deleteUtilisateur = async (req, res) => {
+  // Récupérer l'id de l'utilisateur à supprimer
+  const { id } = req.params;
 
   try {
-      const result = await User.destroy({ where: { id } })
-      res.status(200).json({ message: "L'utilisateur supprime avec succes", data: result })
-
+    const result = await Utilisateur.destroy({ where: { id } });
+    res.status(200).json({ message: "L'utilisateur supprimé avec succès", data: result });
   } catch (error) {
-      res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
-}
+};
 
-
-
-
-
-
-
-/* Crée un nouvel utilisateur
-exports.createUser = async (req, res) => {
+// Crée un nouvel utilisateur
+exports.createUtilisateur = async (req, res) => {
   try {
     const { nom, prenom, email, roleId } = req.body; // Récupération des données utilisateur
-    const nouvelUtilisateur = await User.create({ nom, prenom, email, roleId }); // Création dans la base de données
+    const nouvelUtilisateur = await Utilisateur.create({ nom, prenom, email, roleId }); // Création dans la base de données
     res.status(201).json(nouvelUtilisateur); // Réponse avec l'utilisateur créé
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -91,39 +80,39 @@ exports.createUser = async (req, res) => {
 };
 
 // Récupère un utilisateur par ID
-exports.getUserById = async (req, res) => {
+exports.getUtilisateurById = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id); // Recherche par clé primaire
-    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    res.status(200).json(user); // Réponse avec l'utilisateur trouvé
+    const utilisateur = await Utilisateur.findByPk(req.params.id); // Recherche par clé primaire
+    if (!utilisateur) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    res.status(200).json(utilisateur); // Réponse avec l'utilisateur trouvé
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 // Met à jour un utilisateur par ID
-exports.updateUser = async (req, res) => {
+exports.updateUtilisateur = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id); // Recherche de l'utilisateur
-    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    user.nom = req.body.nom; // Mise à jour du champ "nom"
-    user.email = req.body.email; // Mise à jour du champ "email"
-    user.roleId = req.body.roleId; // Mise à jour du rôle
-    await user.save(); // Sauvegarde des changements
-    res.status(200).json(user); // Réponse avec les données mises à jour
+    const utilisateur = await Utilisateur.findByPk(req.params.id); // Recherche de l'utilisateur
+    if (!utilisateur) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    utilisateur.nom = req.body.nom; // Mise à jour du champ "nom"
+    utilisateur.email = req.body.email; // Mise à jour du champ "email"
+    utilisateur.roleId = req.body.roleId; // Mise à jour du rôle
+    await utilisateur.save(); // Sauvegarde des changements
+    res.status(200).json(utilisateur); // Réponse avec les données mises à jour
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
 // Supprime un utilisateur par ID
-exports.deleteUser = async (req, res) => {
+exports.deleteUtilisateur = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id); // Recherche de l'utilisateur
-    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    await user.destroy(); // Suppression
+    const utilisateur = await Utilisateur.findByPk(req.params.id); // Recherche de l'utilisateur
+    if (!utilisateur) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    await utilisateur.destroy(); // Suppression
     res.status(200).json({ message: 'Utilisateur supprimé avec succès' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};*/
+};
