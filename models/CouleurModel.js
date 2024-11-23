@@ -1,23 +1,24 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 
-const Couleur = sequelize.define('Couleur', {
-    couleur_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+export const Couleur = sequelize.define("Couleur", {
+  couleur_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  nom: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Le champ nom ne peut pas être vide" },
     },
-    nom: {
-        type: DataTypes.STRING,
-        allowNull: false
+  },
+  code: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Le champ code ne peut pas être vide" },
     },
-    code: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-}, {
-    tableName: 'couleurs',
-    timestamps: false
+  },
 });
-
-module.exports = Couleur;

@@ -1,24 +1,21 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 
-const Options = sequelize.define('Options', {
-    option_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+export const Options = sequelize.define("Options", {
+  option_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  nom: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Le champ nom ne peut pas être vide" },
     },
-    nom: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    description: {
-        type: DataTypes.STRING,
-        allowNull: true // Peut être null si aucune description n'est fournie
-    }
-}, {
-    tableName: 'options',
-    timestamps: false
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
 });
-
-module.exports = Options;
-

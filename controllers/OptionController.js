@@ -1,53 +1,44 @@
-const Options = require('../models/options');
+import { Options } from "../models/options.js";
+import { validationResult } from "express-validator";
 
-module.exports = {
-    getAll: async (req, res) => {
-        try {
-            const options = await Options.findAll();
-            res.json(options);
-        } catch (error) {
-            res.status(500).json({ error: 'Erreur lors de la récupération des options.' });
-        }
-    },
+// Obtenir toutes les options
+export const getOptions = async (req, res) => {
+  try {
+    const options = await Options.findAll();
+    res.status(200).json(options);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    getById: async (req, res) => {
-        try {
-            const option = await Options.findByPk(req.params.id);
-            if (!option) return res.status(404).json({ error: 'Option non trouvée.' });
-            res.json(option);
-        } catch (error) {
-            res.status(500).json({ error: 'Erreur lors de la récupération de l’option.' });
-        }
-    },
+// Ajouter une option
+export const addOption = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    create: async (req, res) => {
-        try {
-            const option = await Options.create(req.body);
-            res.status(201).json(option);
-        } catch (error) {
-            res.status(500).json({ error: 'Erreur lors de la création de l’option.' });
-        }
-    },
+  const { nom, description } = req.body;
 
-    update: async (req, res) => {
-        try {
-            const option = await Options.findByPk(req.params.id);
-            if (!option) return res.status(404).json({ error: 'Option non trouvée.' });
-            await option.update(req.body);
-            res.json(option);
-        } catch (error) {
-            res.status(500).json({ error: 'Erreur lors de la mise à jour de l’option.' });
-        }
-    },
+  try {
+    const nouvelleOption = await Options.create({ nom, description });
+    res.status(201).json(nouvelleOption);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-    delete: async (req, res) => {
-        try {
-            const option = await Options.findByPk(req.params.id);
-            if (!option) return res.status(404).json({ error: 'Option non trouvée.' });
-            await option.destroy();
-            res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ error: 'Erreur lors de la suppression de l’option.' });
-        }
-    }
+// Supprimer une option
+export const deleteOption = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const option = await Options.findByPk(id);
+    if (!option) return res.status(404).json({ message: "Option non trouvée" });
+
+    await option.destroy();
+    res.status(200).json({ message: "Option supprimée avec succès" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
