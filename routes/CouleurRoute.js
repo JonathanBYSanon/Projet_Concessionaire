@@ -1,11 +1,15 @@
-const express = require('express');
+import express from "express";
+import { body } from "express-validator";
+import { getCouleurs, addCouleur, deleteCouleur } from "./controllers/couleurController.js";
+
 const router = express.Router();
-const couleurController = require('./controllers/couleurController');
 
-router.get('/', couleurController.getAll);
-router.get('/:id', couleurController.getById);
-router.post('/', couleurController.create);
-router.put('/:id', couleurController.update);
-router.delete('/:id', couleurController.delete);
+router.get("/", getCouleurs);
+router.post(
+  "/",
+  [body("nom").notEmpty().withMessage("Le nom est requis"), body("code").notEmpty().withMessage("Le code est requis")],
+  addCouleur
+);
+router.delete("/:id", deleteCouleur);
 
-module.exports = router;
+export default router;
