@@ -1,12 +1,7 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/database.js";
+import database from "../config/Connections.js";
 
-export const Couleur = sequelize.define("Couleur", {
-  couleur_id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+const Couleur = database.define("Couleur", {
   nom: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -22,3 +17,5 @@ export const Couleur = sequelize.define("Couleur", {
     },
   },
 });
+
+export default Couleur;

@@ -1,12 +1,7 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../config/database.js";
+import database from "../config/Connections.js";
 
-export const Options = sequelize.define("Options", {
-  option_id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+const Option = database.define("Option", {
   nom: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,3 +14,5 @@ export const Options = sequelize.define("Options", {
     allowNull: true,
   },
 });
+
+export default Option;

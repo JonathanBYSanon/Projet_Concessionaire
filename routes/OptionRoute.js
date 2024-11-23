@@ -1,15 +1,12 @@
 import express from "express";
-import { body } from "express-validator";
-import { getOptions, addOption, deleteOption } from "../controllers/optionsController.js";
+//import { body } from "express-validator";
+import { getOptions, addOption, deleteOption } from "../controllers/optionController.js";
 
-const router = express.Router();
+const optionRoute = express.Router();
 
-router.get("/", getOptions);
-router.post(
-  "/",
-  [body("nom").notEmpty().withMessage("Le nom est requis")],
-  addOption
-);
-router.delete("/:id", deleteOption);
 
-export default router;
+optionRoute.get("/", getOptions)
+              .post("/", addOption)
+              .delete("/:id", deleteOption);
+
+export default optionRoute;
