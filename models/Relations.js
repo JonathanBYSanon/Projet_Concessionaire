@@ -22,15 +22,15 @@ import Utilisateur from './UtilisateurModel.js';
 Voiture.belongsTo(Image);
 Image.hasOne(Voiture);
 
-// 1 - 1 voiture et couleur
+// 1 - N voiture et couleur
 Voiture.belongsTo(Couleur);
-Couleur.hasOne(Voiture);
+Couleur.hasMany(Voiture);
 
 // N - N voiture et option
 Voiture.belongsToMany(Option, { through: 'voiture_option' });
 Option.belongsToMany(Voiture, { through: 'voiture_option' });
 
-// 1 - 1 utilisateur et role
+// 1 - N utilisateur et role
 Utilisateur.belongsTo(Role);
 Role.hasMany(Utilisateur);
 
