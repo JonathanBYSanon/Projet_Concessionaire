@@ -2,21 +2,21 @@ import Voiture from './VoitureModel.js';
 import Image from './ImageModel.js';
 import Couleur from './CouleurModel.js';
 import Option from './OptionModel.js';
-// import Modele from './ModeleModel.js';
-// import Marque from './MarqueModel.js';
+import Modele from './ModeleModel.js';
+import Marque from './MarqueModel.js';
 import Role from './RoleModel.js';
 import Utilisateur from './UtilisateurModel.js';
 
 
 // Definition des relations
 
-// 1 - N marque et modele
-// Modele.belongsTo(Marque);
-// Marque.hasMany(Modele);
+//1 - N marque et modele
+Modele.belongsTo(Marque);
+Marque.hasMany(Modele);
 
 // 1 - N modele et voiture
-// Voiture.belongsTo(Modele);
-// Modele.hasMany(Voiture);
+Voiture.belongsTo(Modele);
+Modele.hasMany(Voiture);
 
 // 1 - 1 voiture et image
 Voiture.belongsTo(Image);
@@ -34,7 +34,7 @@ Option.belongsToMany(Voiture, { through: 'voiture_option' });
 Utilisateur.belongsTo(Role);
 Role.hasMany(Utilisateur);
 
-export { Voiture, Image, Couleur, Option, Role, Utilisateur };
+export { Voiture, Image, Couleur, Option, Role, Utilisateur, Modele, Marque };
 // export default { Marque, Modele, Voiture, Image, Couleur, Option, Role, Utilisateur };
 
 

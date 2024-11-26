@@ -2,7 +2,7 @@
 
 /* Importer l'accès à la table des utilisateurs (Importation du modèle Utilisateur)*/
 
-import Utilisateur from '../models/UtilisateurModel.js';
+import { Utilisateur, Role } from '../models/Relations.js';
 import bcrypt from 'bcryptjs';
 
 // Obetnenir un utilisateur par son ID
@@ -37,6 +37,11 @@ export const getUtilisateurs = async (req,res) => {
 export const addUtilisateur = async (req, res) => {
   // Les informations de l'utilisateur (formulaire ou postman)
   const {password, ...infoUtilisateur} = req.body;
+
+  //verfier que les clefs etrangere existent
+  const role = await Role.findByPk(infoUtilisateur.RoleId);
+  if (!role) return res.status(404).json({ message: "Vous ne pouvez pas creer un utlisateur avec un role inexistant" });
+
   // Crypter le mot de passe
   const hash = bcrypt.hashSync(password);
   infoUtilisateur.password = hash;
