@@ -1,6 +1,6 @@
 // Importation du modèle Role
 
-import Role from '../models/RoleModel.js';
+import { Role } from '../models/Relations.js';
 
 // Liste des roles : Lecture
 export const getRoles = async (req, res) => {

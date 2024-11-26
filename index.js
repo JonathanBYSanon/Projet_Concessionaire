@@ -15,6 +15,8 @@ import imageRoute from './routes/ImageRoute.js';
 import login from './routes/AuthorisationRoute.js';
 import RoleRoute from './routes/RoleRoute.js';
 import UtilisateurRoute from './routes/UtilisateurRoute.js';
+import modeleRoute from './routes/ModeleRoute.js';
+import marqueRoute from './routes/MarqueRoute.js';
 
 const ENV = dotenv.config().parsed;
 const app = express();
@@ -32,6 +34,8 @@ app.use("/api/couleur",verifierToken, couleurRoute);
 app.use("/api/option",verifierToken, optionRoute);
 app.use("/api/voiture",verifierToken, voitureRoute);
 app.use("/api/image",verifierToken, imageRoute);
+app.use("/api/modele",verifierToken, modeleRoute);
+app.use("/api/marque",verifierToken, marqueRoute);
 app.use("/api/role", verifierToken, authorisation(["Admin"]), RoleRoute);
 app.use("/api/utilisateur", verifierToken, authorisation(["Admin"]), UtilisateurRoute);
 

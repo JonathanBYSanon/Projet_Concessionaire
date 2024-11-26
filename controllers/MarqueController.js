@@ -1,4 +1,4 @@
-import Marque from "../models/MarqueModel.js";
+import { Marque } from "../models/Relations.js";
 
 // Liste toutes les marques
 export const getMarques = async (req, res) => {

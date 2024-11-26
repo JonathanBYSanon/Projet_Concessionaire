@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import database from "../config/Connections.js";
-import Marque from "./MarqueModel.js";
 
 const Modele = database.define("Modele", {
   nom: {
@@ -19,8 +18,5 @@ const Modele = database.define("Modele", {
   },
 });
 
-// Relation : un modèle appartient à une marque
-Modele.belongsTo(Marque, { foreignKey: "marqueId" });
-Marque.hasMany(Modele, { foreignKey: "marqueId" });
 
 export default Modele;

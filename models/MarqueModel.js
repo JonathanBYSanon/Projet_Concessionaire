@@ -10,6 +10,13 @@ const Marque = database.define("Marque", {
       notEmpty: { msg: "Le nom de la marque est requis." },
     },
   },
+  pays: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: { msg: "Le pays de la marque est requis." },
+    },
+  },
 });
 
 export default Marque;
