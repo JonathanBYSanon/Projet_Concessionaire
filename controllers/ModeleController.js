@@ -33,12 +33,12 @@ export const getModele = async (req, res) => {
 // Ajoute un nouveau modèle
 export const addModele = async (req, res) => {
   try {
-    const { nom, annee, marqueId } = req.body;
+    const { nom, annee, MarqueId } = req.body;
 
-    if (!nom || !marqueId)
+    if (!nom || !MarqueId)
       return res.status(400).json({ message: "Le nom et la marque sont requis." });
 
-    const nouveauModele = await Modele.create({ nom, annee, marqueId });
+    const nouveauModele = await Modele.create({ nom, annee, MarqueId });
     res.status(201).json(nouveauModele);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -49,9 +49,9 @@ export const addModele = async (req, res) => {
 export const updateModele = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nom, annee, marqueId } = req.body;
+    const { nom, annee, MarqueId } = req.body;
 
-    const marque = await Marque.findByPk(marqueId);
+    const marque = await Marque.findByPk(MarqueId);
     if (!marque) return res.status(404).json({ message: "L'id de la marque doit est valide" });
 
     const modele = await Modele.findByPk(id);
@@ -60,7 +60,7 @@ export const updateModele = async (req, res) => {
 
     modele.nom = nom;
     modele.annee = annee;
-    modele.marqueId = marqueId;
+    modele.MarqueId = MarqueId;
 
     await modele.save();
     res.status(200).json(modele);

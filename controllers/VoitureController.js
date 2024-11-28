@@ -5,7 +5,17 @@ export const getVoiture = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const voiture = await Voiture.findByPk(id);
+    //avoir les voutes avec les options le tableau des options. Seulement les id
+    const voiture = await Voiture.findByPk(id, {
+      include: [
+        {
+          model: Option,
+          as: "Options",
+          attributes: ["id"],
+          through: { attributes: [] },
+        },
+      ],
+    });
     if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
 
     res.status(200).json({data : voiture});
@@ -26,16 +36,16 @@ export const getVoitures = async (req, res) => {
 
 // Ajouter une voiture
 export const addVoiture = async (req, res) => {
-  const { vin, kilometrage, etat, imageId, modeleId, couleurId, options } = req.body;
+  const { vin, kilometrage, etat, ImageId, CouleurId, ModeleId, options } = req.body;
 
   // s'assurer que les clefs étrangères existent
-  const image = await Image.findByPk(imageId);
+  const image = await Image.findByPk(ImageId);
   if (!image) return res.status(404).json({ message: "L'image est inexistant" });
 
-  const modele = await Modele.findByPk(modeleId);
+  const modele = await Modele.findByPk(ModeleId);
   if (!modele) return res.status(404).json({ message: "Le modele est inexistant" });
 
-  const couleur = await Couleur.findByPk(couleurId);
+  const couleur = await Couleur.findByPk(CouleurId);
   if (!couleur) return res.status(404).json({ message: "La couleur est inexistante" });
 
   options.forEach(async (optionId) => {
@@ -48,9 +58,9 @@ export const addVoiture = async (req, res) => {
       vin,
       kilometrage,
       etat,
-      imageId,
-      modeleId,
-      couleurId
+      ImageId,
+      CouleurId,
+      ModeleId
     });
 
     if (options && options.length > 0) {
@@ -91,9 +101,10 @@ export const updateVoiture = async (req, res) => {
     voiture.vin = vin;
     voiture.kilometrage = kilometrage;
     voiture.etat = etat;
-    voiture.imageId = imageId;
-    voiture.modeleId = modeleId;
-    voiture.couleurId = couleurId;
+    voiture.ImageId = imageId;
+    voiture.CouleurId = couleurId;
+    voiture.ModeleId = modeleId;
+    
 
     await voiture.save();
 
