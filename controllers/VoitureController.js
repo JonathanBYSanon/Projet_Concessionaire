@@ -1,11 +1,21 @@
-import { Voiture } from '../models/Relations.js';
+import { Voiture, Image, Modele, Couleur, Option } from '../models/Relations.js';
 
 // Obtenir une voiture
 export const getVoiture = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const voiture = await Voiture.findByPk(id);
+    //avoir les voutes avec les options le tableau des options. Seulement les id
+    const voiture = await Voiture.findByPk(id, {
+      include: [
+        {
+          model: Option,
+          as: "Options",
+          attributes: ["id"],
+          through: { attributes: [] },
+        },
+      ],
+    });
     if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
 
     res.status(200).json({data : voiture});
@@ -26,11 +36,83 @@ export const getVoitures = async (req, res) => {
 
 // Ajouter une voiture
 export const addVoiture = async (req, res) => {
-  const { marque, modele, annee, prix, image } = req.body;
+  const { vin, kilometrage, etat, ImageId, CouleurId, ModeleId, options } = req.body;
+
+  // s'assurer que les clefs étrangères existent
+  const image = await Image.findByPk(ImageId);
+  if (!image) return res.status(404).json({ message: "L'image est inexistant" });
+
+  const modele = await Modele.findByPk(ModeleId);
+  if (!modele) return res.status(404).json({ message: "Le modele est inexistant" });
+
+  const couleur = await Couleur.findByPk(CouleurId);
+  if (!couleur) return res.status(404).json({ message: "La couleur est inexistante" });
+
+  options.forEach(async (optionId) => {
+    const option = await Option.findByPk(optionId);
+    if (!option) return res.status(404).json({ message: "Option non trouvée" });
+  });
 
   try {
-    const nouvelleVoiture = await Voiture.create({ marque, modele, annee, prix, image });
-    res.status(201).json({data : nouvelleVoiture});
+    const nouvelleVoiture = await Voiture.create({
+      vin,
+      kilometrage,
+      etat,
+      ImageId,
+      CouleurId,
+      ModeleId
+    });
+
+    if (options && options.length > 0) {
+      await nouvelleVoiture.setOptions(options);
+    }
+
+    res.status(201).json({ data: nouvelleVoiture });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// Mettre à jour une voiture
+export const updateVoiture = async (req, res) => {
+  const { id } = req.params;
+  const { vin, kilometrage, etat, imageId, modeleId, couleurId, options } = req.body;
+
+  // s'assurer que les clefs étrangères existent
+  const image = await Image.findByPk(imageId);
+  if (!image) return res.status(404).json({ message: "L'image est inexistante" });
+
+  const modele = await Modele.findByPk(modeleId);
+  if (!modele) return res.status(404).json({ message: "Le modele est inexistant" });
+
+  const couleur = await Couleur.findByPk(couleurId);
+  if (!couleur) return res.status(404).json({ message: "La couleur est inexistante" });
+
+  options.forEach(async (optionId) => {
+    const option = await Option.findByPk(optionId);
+    if (!option) return res.status(404).json({ message: "Option non trouvée" });
+  });
+
+  try {
+    const voiture = await Voiture.findByPk(id);
+    if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
+
+    voiture.vin = vin;
+    voiture.kilometrage = kilometrage;
+    voiture.etat = etat;
+    voiture.ImageId = imageId;
+    voiture.CouleurId = couleurId;
+    voiture.ModeleId = modeleId;
+    
+
+    await voiture.save();
+
+    if (options && options.length > 0) {
+      await voiture.setOptions(options);
+    }
+
+    res.status(200).json({ data: voiture });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -45,29 +127,7 @@ export const deleteVoiture = async (req, res) => {
     if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
 
     await voiture.destroy();
-    res.status(200).json({ message: "Voiture supprimée avec succès" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Mettre à jour une voiture
-export const updateVoiture = async (req, res) => {
-  const { id } = req.params;
-  const { marque, modele, annee, prix, image } = req.body;
-
-  try {
-    const voiture = await Voiture.findByPk(id);
-    if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
-
-    voiture.marque = marque;
-    voiture.modele = modele;
-    voiture.annee = annee;
-    voiture.prix = prix;
-    voiture.image = image;
-
-    await voiture.save();
-    res.status(200).json({data : voiture});
+    res.status(204).json();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

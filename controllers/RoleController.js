@@ -74,7 +74,7 @@ export const deleteRole = async (req, res) => {
 
 //Récupération d'un rôle par ID
 
-export const getRoleById = async (req, res) => {
+export const getRole= async (req, res) => {
   const { id } = req.params; // Récupération de l'ID du rôle
 
   try {
