@@ -55,22 +55,27 @@ export const addUtilisateur = async (req, res) => {
   }
 };
 
-// 3- Mise à jour d'un utilisateur (U)
+// 3- Mise à jour d'un utilisateur
 export const updateUtilisateur = async (req, res) => {
+  // Les informations de l'utilisateur (formulaire ou postman)
   const { id } = req.params;
-  const newInfo = req.body;
+  const {password, ...infoUtilisateur} = req.body;
+
+  //verfier que les clefs etrangere existent
+  const role = await Role.findByPk(infoUtilisateur.RoleId);
+  if (!role) return res.status(404).json({ message: "Vous ne pouvez pas creer un utlisateur avec un role inexistant" });
+
+  // Crypter le mot de passe
+  //const hash = bcrypt.hashSync(password);
+  //infoUtilisateur.password = hash;
 
   try {
-    const user = await Utilisateur.findByPk(id);
-    if (!user) return res.status(404).json({ message: "Utilisateur non trouvé" });
-
-    // Mettre à jour les champs
-    Object.assign(utilisateur, newInfo);
-    await utilisateur.save();
-
-    res.status(200).json({ message: "Utilisateur mis à jour avec succès", data: utilisateur });
+      const result = await Utilisateur.update(infoUtilisateur, { where: { id } })
+      const user = await Utilisateur.findByPk(id)
+      res.status(200).json({ message: 'Utilisateur modifie avec succes', data: user })
+    
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 

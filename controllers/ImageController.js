@@ -50,3 +50,22 @@ export const deleteImage = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Mettre à jour une image
+export const updateImage = async (req, res) => {
+  const { id } = req.params;
+  const { nom, url } = req.body;
+
+  try {
+    const image = await Image.findByPk(id);
+    if (!image) return res.status(404).json({ message: "Image non trouvée" });
+    
+    image.nom = nom;
+    image.url = url;
+    await image.save();
+
+    res.status(200).json({ message: "Image mise à jour avec succès", data: image });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

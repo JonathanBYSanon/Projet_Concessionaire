@@ -2,7 +2,7 @@
 import express from 'express';
 
 // Importation des fonctions du contrôleur pour "Role"
-import {getRoles, getRoleById, addRole, updateRole, deleteRole} from '../controllers/RoleController.js';
+import {getRoles, getRole, addRole, updateRole, deleteRole} from '../controllers/RoleController.js';
 import { ValidateRoleCreation, ValidateRoleUpdate } from "../validations/RoleValidation.js";
 import handleValidationErrors from '../validations/handleValidationErrors.js';
 
@@ -15,7 +15,7 @@ router.post('/', ValidateRoleCreation, handleValidationErrors, addRole);
 
 // Route pour récupérer un rôle spécifique par son ID
 // Méthode : GET | URL : /role/:id
-router.get('/:id', getRoleById);
+router.get('/:id', getRole);
 
 // Route pour récupérer tous les rôles
 router.get('/', getRoles);
