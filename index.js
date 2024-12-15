@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import compression from 'compression';
-import database from './config/Connections.js';
+import initialisation from './config/Initialisation.js';
 import verifierToken from './authentification/VerifierToken.js';
 import authorisation from './authentification/Authorisation.js';
 
@@ -26,8 +26,8 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Generation des tables
-//database.sync({alter:true});
+//Generation des tables et des données par défaut
+initialisation();
 
 app.use("/api/login", login);
 app.use("/api/couleur",verifierToken, couleurRoute);

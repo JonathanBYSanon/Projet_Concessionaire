@@ -1,4 +1,4 @@
-import { Voiture, Image, Modele, Couleur, Option } from '../models/Relations.js';
+import { Voiture, Image, Modele, Couleur, Option, Marque } from '../models/Relations.js';
 
 // Obtenir une voiture
 export const getVoiture = async (req, res) => {
@@ -27,7 +27,36 @@ export const getVoiture = async (req, res) => {
 // Obtenir toutes les voitures
 export const getVoitures = async (req, res) => {
   try {
-    const voitures = await Voiture.findAll();
+    const voitures = await Voiture.findAll({
+      include: [
+        {
+          model: Image,
+          as: "Image",
+          attributes: ["url"],
+        },
+        {
+          model: Modele,
+          as: "Modele",
+          attributes: ["nom","annee"],
+          include: {
+            model: Marque,
+            as: "Marque",
+            attributes: ["nom", "pays"],
+          },
+        },
+        {
+          model: Couleur,
+          as: "Couleur",
+          attributes: ["code"],
+        },
+        {
+          model: Option,
+          as: "Options",
+          attributes: ["nom"],
+          through: { attributes: [] },
+        },
+      ],
+    });
     res.status(200).json({data : voitures});
   } catch (error) {
     res.status(500).json({ message: error.message });

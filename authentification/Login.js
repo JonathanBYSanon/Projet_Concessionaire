@@ -17,7 +17,7 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
         }
         const token = jwt.sign({ id: user.id }, ENV.JWT_SECRET, { expiresIn: '24h' });
-        res.status(200).json({ token });
+        res.status(200).json({ token:token, message:`Bienvenue ${user.prenom} ${user.nom}` });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
