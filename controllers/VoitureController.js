@@ -42,11 +42,11 @@ export const getVoitures = async (req, res) => {
         {
           model: Modele,
           as: "Modele",
-          attributes: ["nom","annee"],
+          attributes: ["id","nom","annee"],
           include: {
             model: Marque,
             as: "Marque",
-            attributes: ["nom", "pays"],
+            attributes: ["id","nom", "pays"],
           },
         },
         {
