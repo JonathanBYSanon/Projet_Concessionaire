@@ -62,8 +62,12 @@ export const updateUtilisateur = async (req, res) => {
   const {password, ...infoUtilisateur} = req.body;
 
   //verfier que les clefs etrangere existent
-  const role = await Role.findByPk(infoUtilisateur.RoleId);
-  if (!role) return res.status(404).json({ message: "Vous ne pouvez pas creer un utlisateur avec un role inexistant" });
+  try{
+    const role = await Role.findByPk(infoUtilisateur.RoleId);
+  }
+  catch(error){
+    res.status(404).json({ message: "Vous ne pouvez pas modifier un utlisateur avec un role inexistant" });
+  }
 
   // Crypter le mot de passe
   //const hash = bcrypt.hashSync(password);

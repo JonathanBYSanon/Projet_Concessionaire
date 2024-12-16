@@ -11,7 +11,7 @@ export const getOption = async (req, res) => {
 
     res.status(200).json({data : option});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -21,7 +21,7 @@ export const getOptions = async (req, res) => {
     const options = await Option.findAll();
     res.status(200).json({data : options});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -34,7 +34,7 @@ export const addOption = async (req, res) => {
     const nouvelleOption = await Option.create({ nom, description });
     res.status(201).json(nouvelleOption);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -52,7 +52,7 @@ export const updateOption = async (req, res) => {
     await option.save();
     res.status(200).json({data: option});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 }
 
@@ -67,6 +67,6 @@ export const deleteOption = async (req, res) => {
     await option.destroy();
     res.status(200).json({ message: "Option supprimée avec succès" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };

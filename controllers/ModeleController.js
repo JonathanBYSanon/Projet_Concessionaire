@@ -6,10 +6,10 @@ export const getModeles = async (req, res) => {
     const modeles = await Modele.findAll({
       include: {
         model: Marque,
-        attributes: ["nom"],
+        attributes: ["nom","pays"],
       },
     });
-    res.status(200).json(modeles);
+    res.status(200).json({data: modeles});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -23,7 +23,7 @@ export const getModele = async (req, res) => {
 
     if (!modele) return res.status(404).json({ message: "Modèle introuvable." });
 
-    res.status(200).json(modele);
+    res.status(200).json({ data: modele});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

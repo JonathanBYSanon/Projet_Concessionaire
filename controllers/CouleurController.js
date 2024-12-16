@@ -9,9 +9,9 @@ export const getCouleur = async (req, res) => {
     const couleur = await Couleur.findByPk(id);
     if (!couleur) return res.status(404).json({ message: "Couleur non trouvée" });
 
-    res.status(200).json(couleur);
+    res.status(200).json({data: couleur});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -19,9 +19,9 @@ export const getCouleur = async (req, res) => {
 export const getCouleurs = async (req, res) => {
   try {
     const couleurs = await Couleur.findAll();
-    res.status(200).json(couleurs);
+    res.status(200).json({data:couleurs});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -38,9 +38,9 @@ export const updateCouleur = async (req, res) => {
     couleur.code = code;
 
     await couleur.save();
-    res.status(200).json(couleur);
+    res.status(200).json({data: couleur});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -50,9 +50,9 @@ export const addCouleur = async (req, res) => {
 
   try {
     const nouvelleCouleur = await Couleur.create({ nom, code });
-    res.status(201).json(nouvelleCouleur);
+    res.status(201).json({data: nouvelleCouleur});
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -67,6 +67,6 @@ export const deleteCouleur = async (req, res) => {
     await couleur.destroy();
     res.status(200).json({ message: "Couleur supprimée avec succès" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
   }
 };

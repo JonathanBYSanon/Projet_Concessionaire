@@ -4,7 +4,7 @@ import { Marque } from "../models/Relations.js";
 export const getMarques = async (req, res) => {
   try {
     const marques = await Marque.findAll();
-    res.status(200).json(marques);
+    res.status(200).json({data : marques});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -63,6 +63,6 @@ export const updateMarque = async (req, res) => {
     await marque.update({ nom, pays });
     res.status(200).json(marque);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };

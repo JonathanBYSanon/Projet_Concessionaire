@@ -14,6 +14,11 @@ export const getVoiture = async (req, res) => {
           attributes: ["id"],
           through: { attributes: [] },
         },
+        {
+          model: Image,
+          as: "Image",
+          attributes: ["id","url"],
+        },
       ],
     });
     if (!voiture) return res.status(404).json({ message: "Voiture non trouvée" });
@@ -32,7 +37,7 @@ export const getVoitures = async (req, res) => {
         {
           model: Image,
           as: "Image",
-          attributes: ["url"],
+          attributes: ["id","url"],
         },
         {
           model: Modele,
@@ -106,16 +111,16 @@ export const addVoiture = async (req, res) => {
 // Mettre à jour une voiture
 export const updateVoiture = async (req, res) => {
   const { id } = req.params;
-  const { vin, kilometrage, etat, imageId, modeleId, couleurId, options } = req.body;
+  const { vin, kilometrage, etat, ImageId, ModeleId, CouleurId, options } = req.body;
 
   // s'assurer que les clefs étrangères existent
-  const image = await Image.findByPk(imageId);
+  const image = await Image.findByPk(ImageId);
   if (!image) return res.status(404).json({ message: "L'image est inexistante" });
 
-  const modele = await Modele.findByPk(modeleId);
+  const modele = await Modele.findByPk(ModeleId);
   if (!modele) return res.status(404).json({ message: "Le modele est inexistant" });
 
-  const couleur = await Couleur.findByPk(couleurId);
+  const couleur = await Couleur.findByPk(CouleurId);
   if (!couleur) return res.status(404).json({ message: "La couleur est inexistante" });
 
   options.forEach(async (optionId) => {
@@ -130,9 +135,9 @@ export const updateVoiture = async (req, res) => {
     voiture.vin = vin;
     voiture.kilometrage = kilometrage;
     voiture.etat = etat;
-    voiture.ImageId = imageId;
-    voiture.CouleurId = couleurId;
-    voiture.ModeleId = modeleId;
+    voiture.ImageId = ImageId;
+    voiture.CouleurId = CouleurId;
+    voiture.ModeleId = ModeleId;
     
 
     await voiture.save();
